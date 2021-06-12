@@ -1,0 +1,42 @@
+version: "2.2"
+services:
+  nodeserver_1:
+    build:
+      context: ./app
+    ports:
+      - "7000:7000"
+    environment:
+      - PUBLISHED_PORT=7000
+
+  nodeserver_2:
+    build:
+      context: ./app
+    ports:
+      - "7001:7001"
+    environment:
+      - PUBLISHED_PORT=7001
+  nodeserver_3:
+    build:
+      context: ./app
+    ports:
+      - "7002:7002"
+    environment:
+      - PUBLISHED_PORT=7002
+  mongodb:
+    container_name: "mongodb_1"
+    image: bitnami/mongodb:latest
+    restart: always
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    volumes:
+      - ./data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=boardInfinty
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "4000:4000"
